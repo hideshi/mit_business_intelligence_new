@@ -42,7 +42,7 @@ CREATE TABLE `residents` (
 CREATE TABLE `owner_residents` (
   `id` int(11)  AUTO_INCREMENT,
   `owner_id` int(11),
-  `residents_id` int(11),
+  `resident_id` int(11),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
