@@ -17,7 +17,7 @@ class DbManager {
         try {
             $stmt = $pdo->prepare($sql);
             $stmt->execute($param);
-            if (stripos($sql, 's') === 0) {
+            if (stripos(strtolower($sql), 's') === 0) {
                 $result = array();
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_LAST)) {
                     $result[] = $row;

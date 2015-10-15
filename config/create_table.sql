@@ -18,7 +18,7 @@ CREATE TABLE `owners` (
   `religion` varchar(100),
   `highest_education_attainment_id` int(11),
   `years_of_residency` int(11),
-  `civil_status` int(11),
+  `civil_status_id` int(11),
   `occupation` varchar(100),
   `gender_id` int(11),
   `deleted` int(11),
@@ -73,6 +73,33 @@ CREATE TABLE `civil_statuses` (
 
 CREATE TABLE `relationships` (
   `id` int(11)  AUTO_INCREMENT,
+  `genre` int(11),
   `name` varchar(100) ,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO genders (name)VALUES('Male');
+INSERT INTO genders (name)VALUES('Female');
+INSERT INTO ownerships (name)VALUES('Owned');
+INSERT INTO ownerships (name)VALUES('Rented');
+INSERT INTO educations (name)VALUES('Elementary');
+INSERT INTO educations (name)VALUES('High School');
+INSERT INTO educations (name)VALUES('College');
+INSERT INTO educations (name)VALUES('Post College');
+INSERT INTO civil_statuses (name)VALUES('Single');
+INSERT INTO civil_statuses (name)VALUES('Married');
+INSERT INTO civil_statuses (name)VALUES('Widowed');
+INSERT INTO civil_statuses (name)VALUES('Separated');
+INSERT INTO relationships (genre, name)VALUES(1, 'Father');
+INSERT INTO relationships (genre, name)VALUES(1, 'Mother');
+INSERT INTO relationships (genre, name)VALUES(1, 'Sister');
+INSERT INTO relationships (genre, name)VALUES(1, 'Brother');
+INSERT INTO relationships (genre, name)VALUES(1, 'Cousin');
+INSERT INTO relationships (genre, name)VALUES(1, 'GrandFather');
+INSERT INTO relationships (genre, name)VALUES(1, 'GrandMother');
+INSERT INTO relationships (genre, name)VALUES(1, 'Sister-in-law');
+INSERT INTO relationships (genre, name)VALUES(1, 'Brother-in-law');
+INSERT INTO relationships (genre, name)VALUES(1, 'Son-in-law');
+INSERT INTO relationships (genre, name)VALUES(1, 'Daughter-in-law');
+INSERT INTO relationships (genre, name)VALUES(2, 'Boarder');
+INSERT INTO relationships (genre, name)VALUES(2, 'Helper');
