@@ -53,7 +53,8 @@ $operators = $db->execute("SELECT id, genre, name FROM operators WHERE genre = 1
             <div class="row">
 				
 				<h2>Results:</h2>
-				<button style="margin-bottom:10px;" class="btn btn-success"><span class="glyphicon glyphicon-download"></span> Extract to Excel</button>
+                <a id="fileHolder" style="display:none;">download</a>
+				<button id="excel" style="margin-bottom:10px;" class="btn btn-success"><span class="glyphicon glyphicon-download"></span> Extract to Excel</button>
 				 <table id="table" class="table table-striped table-bordered table-hover" id="dataTables-example2">
                 </table>
             </div>
@@ -118,7 +119,7 @@ jQuery(function($){
         for(var k in d) {
             formData.append(k, d[k]);
         }
-        console.log(formData);
+        formData.append('method', 1);
         $.ajax({
             url: '../ajax/select_reports.php',
             type: 'post',
@@ -131,6 +132,40 @@ jQuery(function($){
             console.log(data);
             $('#table').empty();
             $('#table').append(data);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log("error");
+            $('#message').append(jqXHR);
+            $('#message').append(textStatus);
+            $('#message').append(errorThrown);
+        })
+        .always(function() {
+            console.log("complete");
+        })
+    });
+    $('#excel').click(function(event) {
+        if($.isEmptyObject(d)) {
+            alert('Please generate criteria at least 1.');
+        }
+        event.preventDefault();
+        console.log("click extract to excel");
+        var formData = new FormData();
+        for(var k in d) {
+            formData.append(k, d[k]);
+        }
+        formData.append('method', 2);
+        $.ajax({
+            url: '../ajax/select_reports.php',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: formData
+        })
+        .done(function(data) {
+            console.log("success");
+            console.log(data);
+            $("#fileHolder").attr('href', data);
+            $("#fileHolder")[0].click();
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log("error");

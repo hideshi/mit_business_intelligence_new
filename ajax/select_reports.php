@@ -1,6 +1,11 @@
 <?php
 require "../lib/db.php";
+include_once '../lib/phpexcel/PHPExcel.php';
+include_once '../lib/phpexcel/PHPExcel/IOFactory.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $method = $_POST['method'];
+    unset($_POST['method']);
+
     $db = new DbManager();
     $sql1 = "SELECT
               res.full_name AS `Full Name`
@@ -30,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ON civ.id = res.civil_status_id";
     $where = " WHERE ";
     $first = true;
-    //var_dump($_POST);
     $keys = array();
     foreach($_POST as $k => $v) {
         if (!$first) {
@@ -82,17 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     $sql =  $sql1 . $where . ' UNION ' . $sql2 . $where;
-    //echo $sql;
-    //var_dump($keys);
     $residents = $db->execute($sql, array());
-    //var_dump($residents);
     $h = '<thead><tr>';
     if (count($residents) > 0) {
         foreach($residents[0] as $k => $v) {
             $h = $h . '<td>' . $k . '&nbsp;</td>';
         }
         $h = $h . '</tr></thead>';
-        echo $h;
     }
     $r = '<tbody>';
     foreach($residents as $k => $v) {
@@ -103,5 +103,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $r = $r . '</tr>';
     }
     $r = $r . '</tbody>';
-    echo $r;
+    if ($method == '1') {
+        echo $h;
+        echo $r;
+    } else if ($method == '2') {
+        //var_dump($residents);
+        $excel = new PHPExcel();
+        $excel->setActiveSheetIndex(0);
+        $sheet = $excel->getActiveSheet();
+        $cnt = 0;
+        foreach ($residents[0] as $k => $v) {
+            $sheet->setCellValueByColumnAndRow($cnt, 1, $k);
+            $cnt++;
+        }
+        $row_cnt = 2;
+        foreach ($residents as $k => $v) {
+            $col_cnt = 0;
+            foreach ($v as $k => $v2) {
+                $sheet->setCellValueByColumnAndRow($col_cnt, $row_cnt, $v2);
+                $col_cnt++;
+            }
+            $row_cnt++;
+        }
+        $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $now = strval(time());
+        $file_name = $now . '.xlsx';
+        $writer->save(dirname(__FILE__) . '/../download/' . $file_name);
+        $file_name = '../download/' . $file_name;
+        echo $file_name;
+    }
 }
