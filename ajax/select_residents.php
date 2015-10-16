@@ -35,5 +35,4 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $r = $r . '</tr>';
     }
     echo $r;
-    //echo json_encode($residents);
 }
