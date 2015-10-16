@@ -1,6 +1,11 @@
 <?php
 include("../includes/header.php");
 include("../includes/sidebar.php");
+require "../lib/db.php";
+require "../lib/util.php";
+$db = new DbManager();
+$options = $db->execute("SELECT id, genre, name FROM options ORDER BY id ASC", array());
+$operators = $db->execute("SELECT id, genre, name FROM operators WHERE genre = 1 ORDER BY id ASC", array());
 ?>
         <div id="page-wrapper">
             <div class="row">
@@ -19,24 +24,24 @@ include("../includes/sidebar.php");
                         <div class="panel-body">
                             <form class="form-inline">
 							  <div class="form-group">
-								<select class="form-control">
-									<option>[column_1]</option>
-									<option>[column_2]</option>
-									<option>...</option>
+								<select id="option" class="form-control">
+<?php foreach($options as $i): ?>
+		<option value="<?php echo $i['id'];?>" <?php if ($i['id'] == 1) echo 'selected'; ?>><?php h($i['name']);?></option>
+<?php endforeach; ?>
 								</select>
 							  </div>
 							  <div class="form-group">
-								<select class="form-control">
-									<option>Equal To</option>
-									<option>Greater than</option>
-									<option>...</option>
+								<select id="operator" class="form-control">
+<?php foreach($operators as $i): ?>
+		<option value="<?php echo $i['id'];?>" <?php if ($i['id'] == 1) echo 'selected'; ?>><?php h($i['name']);?></option>
+<?php endforeach; ?>
 								</select>
 							  </div>
 							  <div class="form-group">
-								<input type="text" class="form-control" placeholder="Value">
+								<input id="value" type="text" class="form-control" placeholder="Value">
 							  </div>
 							 
-							  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span> Generate</button>
+							  <button id="generate" class="btn btn-success"><span class="glyphicon glyphicon-refresh"></span> Generate</button>
 							</form>
                         </div>
                         <!-- /.panel-body -->
@@ -49,35 +54,8 @@ include("../includes/sidebar.php");
 				
 				<h2>Results:</h2>
 				<button style="margin-bottom:10px;" class="btn btn-success"><span class="glyphicon glyphicon-download"></span> Extract to Excel</button>
-				 <table class="table table-striped table-bordered table-hover" id="dataTables-example2">
-                                    <thead>
-                                        <tr>
-											<th>[column_1]</th>
-                                            <th>[column_2]</th>
-                                            <th>[column_3]</th>
-                                            <th>[column_4]</th>
-											<th>[column_5]</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><a style="cursor:pointer" type="button" data-toggle="modal" data-target="#myModalViewBoarders">Francis Vigor De Ocampo</a></td>
-                                            <td>Boarder</td>
-											<td>11/01/15</td>
-                                            <td>Single</td>
-                                            <td>Male</td>
-											
-                                        </tr>
-                                        <tr class="even gradeC">
-                                             <td class="center"><a style="cursor:pointer" type="button" data-toggle="modal" data-target="#myModalViewBoarders">Catherine Adonis</a></td>
-                                            <td>Helper</td>
-											<td>12/01/15</td>
-                                            <td>Married</td>
-                                            <td>Female</td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
+				 <table id="table" class="table table-striped table-bordered table-hover" id="dataTables-example2">
+                </table>
             </div>
             <!-- /.row -->
 		   
@@ -100,12 +78,72 @@ include("../includes/sidebar.php");
 
     <!-- Morris Charts JavaScript -->
     <script src="../bower_components/raphael/raphael-min.js"></script>
-    <script src="../bower_components/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
+<script>
+jQuery(function($){
+    $('#option').change(function(event) {
+        console.log("changed option");
+        $.ajax({
+            url: '../ajax/select_operators.php?option_id=' + $('#option option:selected').val(),
+            type: 'get',
+            processData: false,
+            contentType: false
+        })
+        .done(function(data) {
+            console.log("success");
+            console.log(data);
+            $('#operator').empty();
+            $('#operator').append(data);
+            $('#value').val("");
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log("error");
+            $('#message').append(jqXHR);
+            $('#message').append(textStatus);
+            $('#message').append(errorThrown);
+        })
+        .always(function() {
+            console.log("complete");
+        })
+    });
+    var d = new Object();
+    $('#generate').click(function(event) {
+        event.preventDefault();
+        console.log("click generate");
+        var formData = new FormData();
+        d[$('#option option:selected').text()] = [$('#operator option:selected').val(), $('#value').val()];
+        for(var k in d) {
+            formData.append(k, d[k]);
+        }
+        console.log(formData);
+        $.ajax({
+            url: '../ajax/select_reports.php',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: formData
+        })
+        .done(function(data) {
+            console.log("success");
+            console.log(data);
+            $('#table').empty();
+            $('#table').append(data);
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log("error");
+            $('#message').append(jqXHR);
+            $('#message').append(textStatus);
+            $('#message').append(errorThrown);
+        })
+        .always(function() {
+            console.log("complete");
+        })
+    });
+});
+</script>
 </body>
 
 </html>

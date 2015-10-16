@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         LEFT OUTER JOIN genders gen
         ON gen.id = res.gender_id
         LEFT OUTER JOIN civil_statuses civ
-        ON civ.id = res.civil_status
+        ON civ.id = res.civil_status_id
         LEFT OUTER JOIN educations edu
         ON edu.id = res.highest_education_attainment_id
         LEFT OUTER JOIN owner_residents ors

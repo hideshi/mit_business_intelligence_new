@@ -157,6 +157,5 @@ INSERT INTO options (genre, name)VALUES(1, 'Civil Status');
 INSERT INTO options (genre, name)VALUES(1, 'Occupation');
 INSERT INTO options (genre, name)VALUES(2, 'Years of Residency');
 INSERT INTO operators (genre, name)VALUES(1, 'Equal To');
-INSERT INTO operators (genre, name)VALUES(2, 'Equal To');
 INSERT INTO operators (genre, name)VALUES(2, 'Greater Than');
 INSERT INTO operators (genre, name)VALUES(2, 'Less Than');
