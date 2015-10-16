@@ -7,24 +7,31 @@ CREATE TABLE `users` (
   `full_name` varchar(100),
   `user_name` varchar(100),
   `password` varchar(100),
+  `created` datetime,
+  `modified` datetime,
+  `deleted` int(11),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `owners` (
   `id` int(11)  AUTO_INCREMENT,
-  `house_number` varchar(100),
-  `type_of_ownership_id` int(11),
   `full_name` varchar(100),
   `address` varchar(200),
+  `house_number` varchar(100),
+  `type_of_ownership_id` int(11),
   `birth_date` date,
   `birth_place` varchar(200),
   `citizenship` varchar(100),
   `religion` varchar(100),
-  `highest_education_attainment_id` int(11),
-  `years_of_residency` int(11),
-  `civil_status_id` int(11),
   `occupation` varchar(100),
+  `years_of_residency` int(11),
   `gender_id` int(11),
+  `status_id` int(11),
+  `civil_status_id` int(11),
+  `house_status_id` int(11),
+  `highest_education_attainment_id` int(11),
+  `created` datetime,
+  `modified` datetime,
   `deleted` int(11),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -35,11 +42,16 @@ CREATE TABLE `residents` (
   `relationship_id` int(11),
   `birth_date` date,
   `birth_place` varchar(200),
-  `civil_status` int(11),
-  `years_of_residency` int(11),
+  `citizenship` varchar(100),
+  `religion` varchar(100),
   `occupation` varchar(100),
+  `years_of_residency` int(11),
   `gender_id` int(11),
+  `status_id` int(11),
+  `civil_status_id` int(11),
   `highest_education_attainment_id` int(11),
+  `created` datetime,
+  `modified` datetime,
   `deleted` int(11),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -69,7 +81,19 @@ CREATE TABLE `educations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `statuses` (
+  `id` int(11)  AUTO_INCREMENT,
+  `name` varchar(100) ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `civil_statuses` (
+  `id` int(11)  AUTO_INCREMENT,
+  `name` varchar(100) ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `house_statuses` (
   `id` int(11)  AUTO_INCREMENT,
   `name` varchar(100) ,
   PRIMARY KEY (`id`)
@@ -104,10 +128,14 @@ INSERT INTO educations (name)VALUES('Elementary');
 INSERT INTO educations (name)VALUES('High School');
 INSERT INTO educations (name)VALUES('College');
 INSERT INTO educations (name)VALUES('Post College');
+INSERT INTO statuses (name)VALUES('Alive');
+INSERT INTO statuses (name)VALUES('Deceased');
 INSERT INTO civil_statuses (name)VALUES('Single');
 INSERT INTO civil_statuses (name)VALUES('Married');
 INSERT INTO civil_statuses (name)VALUES('Widowed');
 INSERT INTO civil_statuses (name)VALUES('Separated');
+INSERT INTO house_statuses (name)VALUES('Active');
+INSERT INTO house_statuses (name)VALUES('Inactive');
 INSERT INTO relationships (genre, name)VALUES(1, 'Father');
 INSERT INTO relationships (genre, name)VALUES(1, 'Mother');
 INSERT INTO relationships (genre, name)VALUES(1, 'Sister');
@@ -121,13 +149,13 @@ INSERT INTO relationships (genre, name)VALUES(1, 'Son-in-law');
 INSERT INTO relationships (genre, name)VALUES(1, 'Daughter-in-law');
 INSERT INTO relationships (genre, name)VALUES(2, 'Boarder');
 INSERT INTO relationships (genre, name)VALUES(2, 'Helper');
-INSERT INTO options (genre, name)VALUES(1, 'full_name');
-INSERT INTO options (genre, name)VALUES(2, 'birth_date');
-INSERT INTO options (genre, name)VALUES(1, 'birth_place');
-INSERT INTO options (genre, name)VALUES(1, 'gender');
-INSERT INTO options (genre, name)VALUES(1, 'civil_status');
-INSERT INTO options (genre, name)VALUES(1, 'occupation');
-INSERT INTO options (genre, name)VALUES(2, 'years_of_residency');
+INSERT INTO options (genre, name)VALUES(1, 'Full Name');
+INSERT INTO options (genre, name)VALUES(2, 'Birth Date');
+INSERT INTO options (genre, name)VALUES(1, 'Birth Place');
+INSERT INTO options (genre, name)VALUES(1, 'Gender');
+INSERT INTO options (genre, name)VALUES(1, 'Civil Status');
+INSERT INTO options (genre, name)VALUES(1, 'Occupation');
+INSERT INTO options (genre, name)VALUES(2, 'Years of Residency');
 INSERT INTO operators (genre, name)VALUES(1, 'Equal To');
 INSERT INTO operators (genre, name)VALUES(2, 'Equal To');
 INSERT INTO operators (genre, name)VALUES(2, 'Greater Than');
