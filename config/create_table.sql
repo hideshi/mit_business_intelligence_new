@@ -1,3 +1,7 @@
+DROP DATABASE mitbi;
+CREATE DATABASE mitbi CHARSET=utf8;
+use mitbi;
+
 CREATE TABLE `users` (
   `id` int(11)  AUTO_INCREMENT,
   `full_name` varchar(100),
@@ -78,6 +82,20 @@ CREATE TABLE `relationships` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `options` (
+  `id` int(11)  AUTO_INCREMENT,
+  `genre` int(11),
+  `name` varchar(100) ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `operators` (
+  `id` int(11)  AUTO_INCREMENT,
+  `genre` int(11),
+  `name` varchar(100) ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO genders (name)VALUES('Male');
 INSERT INTO genders (name)VALUES('Female');
 INSERT INTO ownerships (name)VALUES('Owned');
@@ -103,3 +121,14 @@ INSERT INTO relationships (genre, name)VALUES(1, 'Son-in-law');
 INSERT INTO relationships (genre, name)VALUES(1, 'Daughter-in-law');
 INSERT INTO relationships (genre, name)VALUES(2, 'Boarder');
 INSERT INTO relationships (genre, name)VALUES(2, 'Helper');
+INSERT INTO options (genre, name)VALUES(1, 'full_name');
+INSERT INTO options (genre, name)VALUES(2, 'birth_date');
+INSERT INTO options (genre, name)VALUES(1, 'birth_place');
+INSERT INTO options (genre, name)VALUES(1, 'gender');
+INSERT INTO options (genre, name)VALUES(1, 'civil_status');
+INSERT INTO options (genre, name)VALUES(1, 'occupation');
+INSERT INTO options (genre, name)VALUES(2, 'years_of_residency');
+INSERT INTO operators (genre, name)VALUES(1, 'Equal To');
+INSERT INTO operators (genre, name)VALUES(2, 'Equal To');
+INSERT INTO operators (genre, name)VALUES(2, 'Greater Than');
+INSERT INTO operators (genre, name)VALUES(2, 'Less Than');
