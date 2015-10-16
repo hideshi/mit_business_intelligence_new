@@ -146,6 +146,7 @@ jQuery(function($){
     $('#excel').click(function(event) {
         if($.isEmptyObject(d)) {
             alert('Please generate criteria at least 1.');
+            return false;
         }
         event.preventDefault();
         console.log("click extract to excel");
