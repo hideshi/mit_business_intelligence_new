@@ -57,7 +57,7 @@ if (!isset($_SESSION['login_id'])) {
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.php">Brgy. 663 Zone 71 MIS</a>
-				<p class="navbar-text"><b>Hi <?php echo $_SESSION['login_username'] . "!"  ?></b></b></p>
+				<p class="navbar-text"><b>Hi <?php echo $_SESSION['login_full_name'] . "!"  ?></b></b></p>
             </div>
 			
 		<!-- /.navbar-header -->
