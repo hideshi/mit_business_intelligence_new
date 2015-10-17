@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION['login_id'])) {
+    header("location: /index.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,7 +57,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.php">Brgy. 663 Zone 71 MIS</a>
-				<p class="navbar-text">Hi Admin!</p>
+				<p class="navbar-text"><b>Hi <?php echo $_SESSION['login_username'] . "!"  ?></b></b></p>
             </div>
 			
 		<!-- /.navbar-header -->

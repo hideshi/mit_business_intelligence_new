@@ -12,19 +12,20 @@ include("../includes/sidebar.php");
             <!-- /.row -->
             <div class="row">
                <div class="col-lg-6">
-                                    <form role="form">
+                                    <form role="form" method="post" action="login.php">
+                                    <input name="id" type="hidden" value="" />
 								
                                         <div class="form-group">
                                             <label>Full Name:</label>
-                                            <input class="form-control" required placeholder="House Number">
+                                            <input class="form-control"  value="<?php echo $_SESSION['login_full_name']; ?>">
                                         </div>
                                         <div class="form-group">
                                             <label>Username:</label>
-                                            <input class="form-control" required placeholder="Username">
+                                            <input class="form-control"  value="<?php echo $_SESSION['login_username']; ?>">
                                         </div>
 										<div class="form-group">
                                             <label>Password:</label>
-                                            <input type="password" class="form-control" required>
+                                            <input type="password" class="form-control" value = "">
                                         </div>
                                        
 										<button class="btn btn-success"> Save</button>

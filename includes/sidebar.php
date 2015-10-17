@@ -22,7 +22,7 @@
                             <a href="user_settings.php"><i class="fa fa-gear fa-fw"></i> User Settings</a>
                         </li>
 						<li>
-                            <a href="../index.php"><i class="fa fa-sign-out fa-fw"></i> Log Out</a>
+                            <a href="logout.php"><i class="fa fa-sign-out fa-fw"></i> Log Out</a>
                         </li>
                     </ul>
                 </div>
