@@ -120,7 +120,8 @@ CREATE TABLE `operators` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO users (full_name, user_name, password) VALUES ('Administrator', 'admin', '11111111');
+/* password is admin */
+INSERT INTO users (full_name, user_name, password) VALUES ('Administrator', 'admin', '21232f297a57a5a743894a0e4a801fc3');
 INSERT INTO genders (name)VALUES('Male');
 INSERT INTO genders (name)VALUES('Female');
 INSERT INTO ownerships (name)VALUES('Owned');
