@@ -114,6 +114,9 @@ jQuery(function($){
     $('#generate').click(function(event) {
         event.preventDefault();
         console.log("click generate");
+        if($('#value').val() === "") {
+            return false;
+        }
         var formData = new FormData();
         d[$('#option option:selected').text()] = [$('#operator option:selected').val(), $('#value').val()];
         for(var k in d) {
