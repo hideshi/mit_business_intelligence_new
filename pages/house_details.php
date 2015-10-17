@@ -1,6 +1,44 @@
 <?php
+include ("../config/db_config.php");
 include("../includes/header.php");
 include("../includes/sidebar.php");
+?>
+
+<?php
+	$owner_id = $_GET['id'];
+	$sqlOwner = "SELECT * FROM owners WHERE id = $owner_id";
+	$resultOwner = $conn->query($sqlOwner);
+	$rowOwner = $resultOwner->fetch_assoc();
+	
+	$education_id= $rowOwner['highest_education_attainment_id'];
+	$gender_id= $rowOwner['gender_id'];
+	$civil_status_id= $rowOwner['civil_status_id'];
+	$status_id= $rowOwner['status_id'];
+	$ownership_id= $rowOwner['type_of_ownership_id'];
+	
+	
+		$sqlOwnership = "SELECT * FROM ownerships WHERE id=$ownership_id";
+		 $resultOwnership = $conn->query($sqlOwnership);
+		 $rowOwnership = $resultOwnership->fetch_assoc();
+		 
+		$sqlStatus = "SELECT * FROM statuses WHERE id=$status_id";
+		 $resultStatus = $conn->query($sqlStatus);
+		 $rowStatus = $resultStatus->fetch_assoc();
+		
+		 $sqlEducations = "SELECT * FROM educations WHERE id=$education_id";
+		 $resultEducations = $conn->query($sqlEducations);
+		 $rowEducations = $resultEducations->fetch_assoc();
+		 
+		 
+		 $sqlGenders = "SELECT * FROM genders  WHERE id=$gender_id";
+		 $resultGenders = $conn->query($sqlGenders);
+		 $rowGenders = $resultGenders->fetch_assoc();
+		 
+		 
+		 $sqlCivilStatuses = "SELECT * FROM civil_statuses WHERE id=$civil_status_id";
+		 $resultCivilStatuses = $conn->query($sqlCivilStatuses);
+		 $rowCivilStatuses = $resultCivilStatuses->fetch_assoc();
+	
 ?>
 
 
@@ -8,7 +46,7 @@ include("../includes/sidebar.php");
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-home"></i> House - 665</h1>
+                    <h1 class="page-header"><i class="fa fa-home"></i> House - <?php echo $rowOwner['house_number'];?></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -28,59 +66,61 @@ include("../includes/sidebar.php");
                                     <table class="table table-hover table-bordered table-striped">
 									<tr>
 									<th>House Number:</th>
-									<td>665</td>
+									<td> <?php echo $rowOwner['house_number'];?></td>
 									<th>Type of Ownership:</th>
-									<td>Owned</td>
+									<td> <?php echo $rowOwnership['name'];?></td>
 									</tr>
 									
 									<tr>
 									<th>Full Name:</th>
-									<td>Francis De Ocampo</td>
+									<td> <?php echo $rowOwner['full_name'];?></td>
 									<th>Address:</th>
-									<td>Manila</td>
+									<td> <?php echo $rowOwner['address'];?></td>
 									</tr>
 									
 									<tr>
 									<th>Date of Birth:</th>
-									<td>10/04/15</td>
+									<td> <?php echo $rowOwner['birth_date'];?></td>
 									<th>Place of Birth:</th>
-									<td>Manila</td>
+									<td> <?php echo $rowOwner['birth_place'];?></td>
 									</tr>
 									
 									<tr>
 									<th>Citizenship:</th>
-									<td>Filipino</td>
+									<td><?php echo $rowOwner['citizenship'];?></td>
 									<th>Religion:</th>
-									<td>Catholic</td>
+									<td><?php echo $rowOwner['religion'];?></td>
 									</tr>
 									
 									<tr>
 									<th>Highest Education Attainment:</th>
-									<td>College</td>
+									<td><?php echo $rowEducations['name'];?></td>
 									<th>Years of Residency:</th>
-									<td>1</td>
+									<td><?php echo $rowOwner['years_of_residency'];?></td>
 									</tr>
 									
 									<tr>
 									<th>Civil Status:</th>
-									<td>Single</td>
+									<td><?php echo $rowCivilStatuses['name'];?></td>
 									<th>Occupation:</th>
-									<td>Programmer</td>
+									<td> <?php echo $rowOwner['occupation'];?></td>
 									</tr>
 									
 									<tr>
-									<th>Gender:</th>
-									<td>Male</td>
 									<th>Status:</th>
-									<td>Alive</td>
+									<td><?php echo $rowStatus['name'];?></td>
+									<th>Gender:</th>
+									<td><?php echo $rowGenders['name'];?></td>
 									</tr>
 									
 									<tr>
-									<th>Date Registered:</th>
-									<td>10/04/15 09:00AM</td>
+									<th>Date Created:</th>
+									<td><?php echo $rowOwner['created'];?></td>
 									<th>Date Modified:</th>
-									<td>10/04/15 09:00AM</td>
+									<td><?php echo $rowOwner['modified'];?></td>
 									</tr>
+									
+									
 								    </table>
                                             
                                         
@@ -115,24 +155,60 @@ include("../includes/sidebar.php");
 											
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><a style="cursor:pointer" type="button" data-toggle="modal" data-target="#myModalViewDependents">Hideshi</a></td>
-                                            <td>Brother</td>
-											<td>11/01/15</td>
-                                            <td>Single</td>
-                                            <td>Male</td>
-											
-                                        </tr>
-                                        <tr class="even gradeC">
-                                             <td class="center"><a style="cursor:pointer" type="button" data-toggle="modal" data-target="#myModalViewDependents">Randy</a></td>
-                                            <td>Brother</td>
-											<td>12/01/15</td>
-                                            <td>Married</td>
-                                            <td>Male</td>
-                                        </tr>
-                                        
-                                    </tbody>
+                                    <?php
+									$sqlResident = "SELECT residents.id, owner_residents.resident_id
+													FROM residents
+													INNER JOIN owner_residents
+													ON residents.id=owner_residents.resident_id
+													WHERE owner_id = $owner_id";
+									$resultResident = $conn->query($sqlResident);
+									if ($resultResident->num_rows > 0) {
+										// output data of each row
+										while($rowResident = $resultResident->fetch_assoc()) 
+										{
+											$resident_id = $rowResident['resident_id'];
+											$sql = "SELECT * FROM residents WHERE id=$resident_id AND relationship_id < 12";
+											$result = $conn->query($sql);
+													if ($result->num_rows > 0) {
+													// output data of each row
+													while($row = $result->fetch_assoc()) 
+													{
+														$relationship_id = $row['relationship_id'];
+														$sqlRelationship = "SELECT * FROM relationships WHERE id=$relationship_id";
+														$resultRelationship = $conn->query($sqlRelationship);
+														$rowRelationship = $resultRelationship->fetch_assoc();
+														$relationship = $rowRelationship['name'];
+															
+														$civil_status_id = $row['civil_status_id'];
+														$sqlCivilStatus = "SELECT * FROM civil_statuses WHERE id=$civil_status_id";
+														$resultCivilStatus = $conn->query($sqlCivilStatus);
+														$rowCivilStatus = $resultCivilStatus->fetch_assoc();
+														$civil_status = $rowCivilStatus['name'];
+														
+														$gender_id = $row['gender_id'];
+														$sqlGender = "SELECT * FROM genders WHERE id=$gender_id";
+														$resultGender = $conn->query($sqlGender);
+														$rowGender = $resultGender->fetch_assoc();
+														$gender = $rowGender['name'];														
+														
+														
+														
+														echo ' <tbody>
+																<tr>
+																	<td><a href="registration_details.php?owner_id='.$owner_id.'&resident_id='.$resident_id.'">'.$row['full_name'].'</a></td>
+																	<td>'.$relationship.'</td>
+																	<td>'.$row['birth_date'].'</td>
+																	<td>'.$civil_status.'</td>
+																	<td>'.$gender.'</td>
+																</tr>
+															  
+															</tbody>';
+													}
+													}
+										}
+										}														
+									
+									?>
                                 </table>
                             </div>
                         </div>
@@ -162,31 +238,67 @@ include("../includes/sidebar.php");
 											
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><a style="cursor:pointer" type="button" data-toggle="modal" data-target="#myModalViewBoarders">Francis Vigor De Ocampo</a></td>
-                                            <td>Boarder</td>
-											<td>11/01/15</td>
-                                            <td>Single</td>
-                                            <td>Male</td>
-											
-                                        </tr>
-                                        <tr class="even gradeC">
-                                             <td class="center"><a style="cursor:pointer" type="button" data-toggle="modal" data-target="#myModalViewBoarders">Catherine Adonis</a></td>
-                                            <td>Helper</td>
-											<td>12/01/15</td>
-                                            <td>Married</td>
-                                            <td>Female</td>
-                                        </tr>
-                                        
-                                    </tbody>
+                                    <?php
+									$sqlResident = "SELECT residents.id, owner_residents.resident_id
+													FROM residents
+													INNER JOIN owner_residents
+													ON residents.id=owner_residents.resident_id
+													WHERE owner_id = $owner_id";
+									$resultResident = $conn->query($sqlResident);
+									if ($resultResident->num_rows > 0) {
+										// output data of each row
+										while($rowResident = $resultResident->fetch_assoc()) 
+										{
+											$resident_id = $rowResident['resident_id'];
+											$sql = "SELECT * FROM residents WHERE id=$resident_id AND relationship_id > 11";
+											$result = $conn->query($sql);
+													if ($result->num_rows > 0) {
+													// output data of each row
+													while($row = $result->fetch_assoc()) 
+													{
+														$relationship_id = $row['relationship_id'];
+														$sqlRelationship = "SELECT * FROM relationships WHERE id=$relationship_id";
+														$resultRelationship = $conn->query($sqlRelationship);
+														$rowRelationship = $resultRelationship->fetch_assoc();
+														$relationship = $rowRelationship['name'];
+															
+														$civil_status_id = $row['civil_status_id'];
+														$sqlCivilStatus = "SELECT * FROM civil_statuses WHERE id=$civil_status_id";
+														$resultCivilStatus = $conn->query($sqlCivilStatus);
+														$rowCivilStatus = $resultCivilStatus->fetch_assoc();
+														$civil_status = $rowCivilStatus['name'];
+														
+														$gender_id = $row['gender_id'];
+														$sqlGender = "SELECT * FROM genders WHERE id=$gender_id";
+														$resultGender = $conn->query($sqlGender);
+														$rowGender = $resultGender->fetch_assoc();
+														$gender = $rowGender['name'];														
+														
+														
+														
+														echo ' <tbody>
+																<tr>
+																	<td><a href="registration_details.php?owner_id='.$owner_id.'&resident_id='.$resident_id.'">'.$row['full_name'].'</a></td>
+																	<td>'.$relationship.'</td>
+																	<td>'.$row['birth_date'].'</td>
+																	<td>'.$civil_status.'</td>
+																	<td>'.$gender.'</td>
+																</tr>
+															  
+															</tbody>';
+													}
+													}
+										}
+										}														
+									
+									?>
                                 </table>
                             </div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-					<button type="button" class="btn btn-success"> <span class="glyphicon glyphicon-ok"></span> Save</button> <br>
+					
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -232,160 +344,3 @@ include("../includes/sidebar.php");
 </body>
 
 </html>
-
-
-
-
-<div class="modal fade" id="myModalViewBoarders" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span> Other Occupant Information</h4>
-      </div>
-      <div class="modal-body">
-         <table class="table table-hover table-bordered table-striped">
-									<tr>
-									<th>House Number:</th>
-									<td>665</td>
-									<th>Type of Ownership:</th>
-									<td>Owned</td>
-									</tr>
-									
-									<tr>
-									<th>Full Name:</th>
-									<td>Francis De Ocampo</td>
-									<th>Address:</th>
-									<td>Manila</td>
-									</tr>
-									
-									<tr>
-									<th>Date of Birth:</th>
-									<td>10/04/15</td>
-									<th>Place of Birth:</th>
-									<td>Manila</td>
-									</tr>
-									
-									<tr>
-									<th>Citizenship:</th>
-									<td>Filipino</td>
-									<th>Religion:</th>
-									<td>Catholic</td>
-									</tr>
-									
-									<tr>
-									<th>Highest Education Attainment:</th>
-									<td>College</td>
-									<th>Years of Residency:</th>
-									<td>1</td>
-									</tr>
-									
-									<tr>
-									<th>Civil Status:</th>
-									<td>Single</td>
-									<th>Occupation:</th>
-									<td>Programmer</td>
-									</tr>
-									
-									<tr>
-									<th>Gender:</th>
-									<td>Male</td>
-									<th>Status:</th>
-									<td>Alive</td>
-									</tr>
-									
-									<tr>
-									<th>Date Registered:</th>
-									<td>10/04/15 09:00AM</td>
-									<th>Date Modified:</th>
-									<td>10/04/15 09:00AM</td>
-									</tr>
-								    </table>
-      </div>
-      <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal"> <span class="glyphicon glyphicon-remove"></span> Close</button>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<div class="modal fade" id="myModalViewDependents" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span> Dependent Information</h4>
-      </div>
-      <div class="modal-body">
-         <table class="table table-hover table-bordered table-striped">
-									<tr>
-									<th>House Number:</th>
-									<td>665</td>
-									<th>Type of Ownership:</th>
-									<td>Owned</td>
-									</tr>
-									
-									<tr>
-									<th>Full Name:</th>
-									<td>Francis De Ocampo</td>
-									<th>Address:</th>
-									<td>Manila</td>
-									</tr>
-									
-									<tr>
-									<th>Date of Birth:</th>
-									<td>10/04/15</td>
-									<th>Place of Birth:</th>
-									<td>Manila</td>
-									</tr>
-									
-									<tr>
-									<th>Citizenship:</th>
-									<td>Filipino</td>
-									<th>Religion:</th>
-									<td>Catholic</td>
-									</tr>
-									
-									<tr>
-									<th>Highest Education Attainment:</th>
-									<td>College</td>
-									<th>Years of Residency:</th>
-									<td>1</td>
-									</tr>
-									
-									<tr>
-									<th>Civil Status:</th>
-									<td>Single</td>
-									<th>Occupation:</th>
-									<td>Programmer</td>
-									</tr>
-									
-									<tr>
-									<th>Gender:</th>
-									<td>Male</td>
-									<th>Status:</th>
-									<td>Alive</td>
-									</tr>
-									
-									<tr>
-									<th>Date Registered:</th>
-									<td>10/04/15 09:00AM</td>
-									<th>Date Modified:</th>
-									<td>10/04/15 09:00AM</td>
-									</tr>
-								    </table>
-      </div>
-      <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal"> <span class="glyphicon glyphicon-remove"></span> Close</button>
-        
-      </div>
-    </div>
-  </div>
-</div>
-
-

@@ -1,6 +1,27 @@
 <?php
+include ("../config/db_config.php");
 include("../includes/header.php");
 include("../includes/sidebar.php");
+
+?>
+
+<?php
+		$sqlTotalCount = "SELECT COUNT(gender_id) AS TotalCount FROM residents";
+		$resultTotalCount = $conn->query($sqlTotalCount);
+		$rowTotalCount = $resultTotalCount->fetch_assoc();
+		$total = $rowTotalCount['TotalCount'];
+		
+		$sqlMale = "SELECT COUNT(gender_id) AS MaleCount FROM residents WHERE gender_id=1";
+		$resultMale = $conn->query($sqlMale);
+		$rowMale = $resultMale->fetch_assoc();
+		echo $male = $rowMale['MaleCount'];
+		
+		$sqlFemale = "SELECT COUNT(gender_id) AS FemaleCount FROM residents WHERE gender_id=2";
+		$resultFemale = $conn->query($sqlFemale);
+		$rowFemale = $resultFemale->fetch_assoc();
+		echo $female = $rowFemale['FemaleCount'];
+		
+		
 ?>
         <div id="page-wrapper">
             <div class="row">
@@ -11,32 +32,21 @@ include("../includes/sidebar.php");
             </div>
             <!-- /.row -->
             <div class="row">
-			<div class="alert alert-info">
-					Sample Report 1
-					</div>
-               <div class="col-md-12">
-					<div>
-						<canvas id="line"></canvas>
+				<div class="col-md-6">
+					<div class="alert alert-success" role="alert"><i class="fa fa-users fa-fw"></i> Total Residents: <?php echo $total;?></div>
+					<div class="alert alert-warning" role="alert"><i class="fa fa-male fa-fw"></i> Total Male Count: <?php echo $male;?></div>
+					<div class="alert alert-info" role="alert"><i class="fa fa-female fa-fw"></i> Total Female Count: <?php echo $female;?></div>
+				</div>
+			   <div class="col-md-6">
+					<div id="canvas-holder">
+					<center>
+						<canvas id="chart-area" width="400" height="400"/>
+					</center>
 					</div>
 					
 				</div>
             </div>
             <!-- /.row -->
-           <hr>
-		    <!-- /.row -->
-            <div class="row">
-				<div class="alert alert-info">
-					Sample Report 2
-					</div>
-				<div class="col-md-12">
-					<div>
-						<canvas id="bar"></canvas>
-					</div>
-				
-				</div>
-            </div>
-            <!-- /.row -->
-		   
 		   
 		   
         </div>
@@ -67,76 +77,30 @@ include("../includes/sidebar.php");
 </html>
 
 
-<!-- SCRIPT FOR LINE GRAPH -->
-<script>
-		var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-		var lineChartData = {
-			labels : ["January","February","March","April","May","June","July","August","September","October","November","December"],
-			datasets : [
-				{
-					label: "My First dataset",
-					fillColor : "rgba(220,220,220,0.2)",
-					strokeColor : "rgba(220,220,220,1)",
-					pointColor : "rgba(220,220,220,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-				},
-				{
-					label: "My Second dataset",
-					fillColor : "rgba(151,187,205,0.2)",
-					strokeColor : "rgba(151,187,205,1)",
-					pointColor : "rgba(151,187,205,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-				}
-			]
-
-		}
-<!-- SCRIPT FOR LINE GRAPH -->
-
-
-
-
-<!-- SCRIPT FOR BAR GRAPH -->
-
-	var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-
-	var barChartData = {
-		labels : ["January","February","March","April","May","June","July","August","September","October","November","December"],
-		datasets : [
-			{
-				fillColor : "rgba(220,220,220,0.5)",
-				strokeColor : "rgba(220,220,220,0.8)",
-				highlightFill: "rgba(220,220,220,0.75)",
-				highlightStroke: "rgba(220,220,220,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			},
-			{
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,0.8)",
-				highlightFill : "rgba(151,187,205,0.75)",
-				highlightStroke : "rgba(151,187,205,1)",
-				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-			}
-		]
-
-	}
-	
-	window.onload = function(){
-		var bar = document.getElementById("bar").getContext("2d");
-		window.myBar = new Chart(bar).Bar(barChartData, {
-			responsive : true
-		});
+	<script>
 		
-		var line = document.getElementById("line").getContext("2d");
-		window.myLine = new Chart(line).Line(lineChartData, {
-			responsive: true
-		});
-	}
+		var pieData = [
+				{
+					value: <?php echo $male; ?>,
+					color:"#F7464A",
+					highlight: "#FF5A5E",
+					label: "Red"
+				},
+				
+				{
+					value:  <?php echo $female; ?>,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				
+			];
+
+			window.onload = function(){
+				var ctx = document.getElementById("chart-area").getContext("2d");
+				window.myPie = new Chart(ctx).Pie(pieData);
+			};
+
+
 
 	</script>
-<!-- SCRIPT FOR BAR GRAPH -->

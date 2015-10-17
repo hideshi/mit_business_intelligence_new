@@ -1,6 +1,74 @@
 <?php
+include ("../config/db_config.php");
 include("../includes/header.php");
 include("../includes/sidebar.php");
+?>
+
+<?php
+	$owner_id = $_GET['owner_id'];
+	if(isset($_GET["resident_id"])) {
+		$sqlResident = "
+		select
+		house_number
+		, gen.name as gender
+		, res.full_name
+		, own.address
+		, res.birth_date
+		, res.birth_place
+		, res.citizenship
+		, res.religion
+		, edu.name as education
+		, res.years_of_residency
+		, civ.name as civil_statuses
+		, res.occupation
+		, sts.name as status
+		from residents res
+		inner join owner_residents ors
+		on ors.resident_id = resident_id
+		inner join owners own
+		on own.id = ors.owner_id
+		inner join educations edu
+		on edu.id = res.highest_education_attainment_id
+		left outer join statuses sts
+		on sts.id = res.status_id
+		inner join civil_statuses civ
+		on civ.id = res.civil_status_id
+		inner join genders gen
+		on gen.id = res.gender_id
+		where res.id = " . $_GET["resident_id"];
+		$resultResident = $conn->query($sqlResident);
+		$rowResident = $resultResident->fetch_assoc();
+	
+	} else {
+		$sqlOwner = "
+		select
+		own.house_number
+		, gen.name as gender
+		, own.full_name
+		, own.address
+		, own.birth_date
+		, own.birth_place
+		, own.citizenship
+		, own.religion
+		, edu.name as education
+		, own.years_of_residency
+		, civ.name as civil_status
+		, own.occupation
+		, sts.name as status
+		from owners own
+		inner join educations edu
+		on edu.id = own.highest_education_attainment_id
+		left outer join statuses sts
+		on sts.id = own.status_id
+		inner join civil_statuses civ
+		on civ.id = own.civil_status_id
+		inner join genders gen
+		on gen.id = own.gender_id
+		where own.id = " . $owner_id;
+		$resultOwner = $conn->query($sqlOwner);
+		$rowOwner = $resultOwner->fetch_assoc();
+	}
+	
 ?>
 
 
@@ -8,7 +76,17 @@ include("../includes/sidebar.php");
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-user"></i> Francis Vigor De Ocampo</h1>
+                    <h1 class="page-header"><i class="fa fa-user"></i>
+					<?php
+					if(isset($_GET["resident_id"])) {
+					echo $rowResident['full_name'];
+					}
+					else
+					{
+					echo $rowOwner['full_name'];
+					}
+					?>
+					</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -25,57 +103,117 @@ include("../includes/sidebar.php");
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <table class="table table-hover table-bordered table-striped">
+                                    <?php
+									
+					if(isset($_GET["resident_id"])) {
+					echo'
+					
+									<table class="table table-hover table-bordered table-striped">
 									<tr>
 									<th>House Number:</th>
-									<td>665</td>
-									<th>Type of Ownership:</th>
-									<td>Owned</td>
+									<td> '.$rowResident['house_number'].'</td>
+									<th>Gender:</th>
+									<td> '.$rowResident['gender'].'</td>
 									</tr>
 									
 									<tr>
 									<th>Full Name:</th>
-									<td>Francis De Ocampo</td>
+									<td> '.$rowResident['full_name'].'</td>
 									<th>Address:</th>
-									<td>Manila</td>
+									<td> '.$rowResident['address'].'</td>
 									</tr>
 									
 									<tr>
 									<th>Date of Birth:</th>
-									<td>10/04/15</td>
+									<td> '.$rowResident['birth_date'].'</td>
 									<th>Place of Birth:</th>
-									<td>Manila</td>
+									<td> '.$rowResident['birth_place'].'</td>
 									</tr>
 									
 									<tr>
 									<th>Citizenship:</th>
-									<td>Filipino</td>
+									<td>'.$rowResident['citizenship'].'</td>
 									<th>Religion:</th>
-									<td>Catholic</td>
+									<td>'.$rowResident['religion'].'</td>
 									</tr>
 									
 									<tr>
 									<th>Highest Education Attainment:</th>
-									<td>College</td>
+									<td>'.$rowResident['education'].'</td>
 									<th>Years of Residency:</th>
-									<td>1</td>
+									<td>'.$rowResident['years_of_residency'].'</td>
 									</tr>
 									
 									<tr>
 									<th>Civil Status:</th>
-									<td>Single</td>
+									<td>'.$rowResident['civil_statuses'].'</td>
 									<th>Occupation:</th>
-									<td>Programmer</td>
+									<td>'.$rowResident['occupation'].'</td>
 									</tr>
 									
 									<tr>
-									<th>Gender:</th>
-									<td>Male</td>
 									<th>Status:</th>
-									<td>Alive</td>
+									<td>'.$rowResident['status'].'</td>
 									</tr>
 								    </table>
-                                            
+						';
+					}
+					else{
+					
+					echo'
+					
+									<table class="table table-hover table-bordered table-striped">
+									<tr>
+									<th>House Number:</th>
+									<td> '.$rowOwner['house_number'].'</td>
+									<th>Gender:</th>
+									<td> '.$rowOwner['gender'].'</td>
+									</tr>
+									
+									<tr>
+									<th>Full Name:</th>
+									<td> '.$rowOwner['full_name'].'</td>
+									<th>Address:</th>
+									<td> '.$rowOwner['address'].'</td>
+									</tr>
+									
+									<tr>
+									<th>Date of Birth:</th>
+									<td> '.$rowOwner['birth_date'].'</td>
+									<th>Place of Birth:</th>
+									<td> '.$rowOwner['birth_place'].'</td>
+									</tr>
+									
+									<tr>
+									<th>Citizenship:</th>
+									<td>'.$rowOwner['citizenship'].'</td>
+									<th>Religion:</th>
+									<td>'.$rowOwner['religion'].'</td>
+									</tr>
+									
+									<tr>
+									<th>Highest Education Attainment:</th>
+									<td>'.$rowOwner['education'].'</td>
+									<th>Years of Residency:</th>
+									<td>'.$rowOwner['years_of_residency'].'</td>
+									</tr>
+									
+									<tr>
+									<th>Civil Status:</th>
+									<td>'.$rowOwner['civil_status'].'</td>
+									<th>Occupation:</th>
+									<td>'.$rowOwner['occupation'].'</td>
+									</tr>
+									
+									<tr>
+									<th>Status:</th>
+									<td>'.$rowOwner['status'].'</td>
+									</tr>
+								    </table>
+						';					
+						
+					}
+                         ?>        
                                         
                                            
                                         </div>
@@ -87,7 +225,7 @@ include("../includes/sidebar.php");
                     </div>
                     <!-- /.panel -->
 					
-					
+					<a href="registration_list.php" class="btn btn-default">Back</a>
 					
 					
 					

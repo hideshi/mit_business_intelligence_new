@@ -1,4 +1,5 @@
 <?php
+include ("../config/db_config.php");
 include("../includes/header.php");
 include("../includes/sidebar.php");
 ?>
@@ -24,7 +25,7 @@ include("../includes/sidebar.php");
                             <div class="dataTable_wrapper">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                        <tr>
+									<tr>
                                             <th>House No.</th>
                                             <th>Address</th>
                                             <th>Owner</th>
@@ -32,25 +33,38 @@ include("../includes/sidebar.php");
 											<th>Status</th>
 											
                                         </tr>
+										
                                     </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><a href="house_details.php">665</a></td>
-                                            <td>Manila</td>
-											<td>Francis Vigor De Ocampo</td>
-                                            <td>1</td>
-                                            <td>Inactive</td>
-											
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td class="center"><a href="house_details.php">676</a></td>
-											<td>Makati</td>
-                                            <td>Catherine Adonis</td>
-                                            <td>1</td>
-                                            <td>Active</td>
-                                        </tr>
+									<?php
+										
+										$sql = "SELECT
+											 o.id
+											,o.full_name
+											,o.years_of_residency
+											,s.name as status
+											,o.house_number
+											,o.address										
+										FROM owners o
+										INNER JOIN statuses s ON s.id = o.status_id";
+										$result = $conn->query($sql);
+										if ($result->num_rows > 0) {
+										// output data of each row
+										while($row = $result->fetch_assoc()) 
+										{
+										echo'	 <tbody>
+													<tr>
+													<td><a href="house_details.php?id='.$row['id'].'">'.$row['house_number'].'</a></td>
+													<td>'.$row['address'].'</td>
+													<td>'.$row['full_name'].'</td>
+													<td>'.$row['years_of_residency'].'</td>
+													<td>'.$row['status'].'</td>
+													</tr>
+												  
+												</tbody>';
+										}
+										}
+									?>
                                         
-                                    </tbody>
                                 </table>
                             </div>
                         </div>

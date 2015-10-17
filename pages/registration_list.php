@@ -1,4 +1,5 @@
 <?php
+include ("../config/db_config.php");
 include("../includes/header.php");
 include("../includes/sidebar.php");
 ?>
@@ -30,86 +31,68 @@ include("../includes/sidebar.php");
 											
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td class="center"><a href="house_details.php">665</a></td>
-                                            <td><a href="registration_details.php">Francis Vigor De Ocampo</a></td>
-                                            <td>Manila</td>
-                                            <td>10/05/1992</td>
-                                            <td>Deceased</td>
-											
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td class="center"><a href="house_details.php">676</a></td>
-                                            <td><a href="registration_details.php">Catherine Adonis</a></td>
-                                            <td>Makati</td>
-                                            <td>11/06/1993</td>
-                                            <td>Alive</td>
-                                        </tr>
-                                        <tr class="odd gradeA">
-                                            <td class="center"><a href="house_details.php">687</a></td>
-                                            <td><a href="registration_details.php">Rose Ann Assuncion</a></td>
-                                            <td>Cavite</td>
-                                            <td>10/10/1952</td>
-                                            <td>Deceased</td>
-                                        </tr>
-                                        <tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">610</a></td>
-                                            <td><a href="registration_details.php">Gem</a></td>
-                                            <td>Zamboanga</td>
-                                            <td>11/05/1992</td>
-                                            <td>Alive</td>
-                                        </tr>
-                                        <tr class="odd gradeA">
-                                            <td class="center"><a href="house_details.php">665</a></td>
-                                            <td><a href="registration_details.php">Hideshi</a></td>
-                                            <td>Japan</td>
-                                            <td>12/05/1995</td>
-                                            <td>Alive</td>
-                                        </tr>
-                                        <tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">672</a></td>
-                                            <td><a href="registration_details.php">Randy</a></td>
-                                            <td>Somewhere</td>
-                                            <td>10/01/1192</td>
-                                            <td>Deceased</td>
-                                        </tr>
-										<tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">672</a></td>
-                                            <td><a href="registration_details.php">Randy</a></td>
-                                            <td>Somewhere</td>
-                                            <td>10/01/1192</td>
-                                            <td>Deceased</td>
-                                        </tr>
-										<tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">672</a></td>
-                                            <td><a href="registration_details.php">Randy</a></td>
-                                            <td>Somewhere</td>
-                                            <td>10/01/1192</td>
-                                            <td>Alive</td>
-                                        </tr>
-										<tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">672</a></td>
-                                            <td><a href="registration_details.php">Randy</a></td>
-                                            <td>Somewhere</td>
-                                            <td>10/01/1192</td>
-                                            <td>Deceased</td>
-                                        </tr>
-										<tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">672</a></td>
-                                            <td><a href="registration_details.php">Randy</a></td>
-                                            <td>Somewhere</td>
-                                            <td>10/01/1192</td>
-                                            <td>Alive</td>
-                                        </tr>
-										<tr class="even gradeA">
-                                            <td class="center"><a href="house_details.php">672</a></td>
-                                            <td><a href="registration_details.php">Randy</a></td>
-                                            <td>Somewhere</td>
-                                            <td>10/01/1192</td>
-                                            <td>Deceased</td>
-                                        </tr>
-                                    </tbody>
+									
+									<?php
+										
+										$sql = "SELECT
+											  'owner' as type
+											, o.id as resident_id
+											, o.id as owner_id
+											,o.full_name
+											,o.birth_date
+											,s.name as status
+											,o.house_number
+											,o.address										
+										FROM owners o
+										LEFT OUTER JOIN statuses s ON s.id = o.status_id
+										UNION
+										SELECT
+											 'resident' as type
+											, r.id as resident_id
+											, o2.id as owner_id
+											,r.full_name
+											,r.birth_date
+											,s.name as status
+											,o2.house_number
+											,o2.address
+										FROM residents r
+										INNER JOIN owner_residents ors ON ors.resident_id = r.id
+										INNER JOIN owners o2 ON ors.owner_id = o2.id
+										LEFT OUTER JOIN statuses s ON s.id = r.status_id
+										"; 
+										$result = $conn->query($sql);
+										if ($result->num_rows > 0) {
+										// output data of each row
+										while($row = $result->fetch_assoc()) 
+										{
+											echo ' <tbody>
+													<tr>
+													<td><a href="house_details.php?id='.$row['owner_id'].'">'.$row['house_number'].'</a></td>
+												';
+												
+														if ($row['type'] === "owner")
+														{
+												echo'			<td><a style="cursor:pointer" type="button"	 			href="registration_details.php?owner_id='.$row['owner_id'].'">'.$row['full_name'].'</a></td>
+												';
+														}
+															elseif ($row['type'] === "resident")
+															{
+												echo'			<td><a style="cursor:pointer" type="button" href="registration_details.php?owner_id='.$row['owner_id'].'&resident_id='.$row['resident_id'].'">'.$row['full_name'].'</a></td>	
+												';
+															}
+															
+														
+												echo'	<td>'.$row['address'].'</td>
+														<td>'.$row['birth_date'].'</td>
+														<td>'.$row['status'].'</td>
+													</tr>
+												  
+												</tbody>';
+										}
+										}
+									?>
+									
+                                   
                                 </table>
                             </div>
                         </div>

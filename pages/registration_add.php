@@ -379,6 +379,7 @@ jQuery(function($){
         .done(function(data) {
             console.log("success");
             $('#pk_owner').val(data);
+            alert("Registered an owner");
         })
         .fail(function(jqXHR, textStatus, errorThrown) {
             console.log("error");
@@ -426,6 +427,7 @@ jQuery(function($){
                 console.log(data);
                 $('#table_dependent').empty();
                 $('#table_dependent').append(data);
+                alert("Registered a resident");
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("error");
@@ -483,6 +485,7 @@ jQuery(function($){
                 console.log(data);
                 $('#table_boarder').empty();
                 $('#table_boarder').append(data);
+                alert("Registered a resident");
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("error");
