@@ -6,26 +6,26 @@ include("../includes/sidebar.php");
 ?>
 
 <?php
-		$sqlTotalCount = "SELECT COUNT(gender_id) AS TotalCount FROM residents";
+		$sqlTotalCount = "SELECT COUNT(gender_id) AS TotalCount FROM residents WHERE status_id = 1";
 		$resultTotalCount = $conn->query($sqlTotalCount);
 		$rowTotalCount = $resultTotalCount->fetch_assoc();
-		$sqlTotalCount2 = "SELECT COUNT(gender_id) AS TotalCount FROM owners";
+		$sqlTotalCount2 = "SELECT COUNT(gender_id) AS TotalCount FROM owners WHERE status_id = 1";
 		$resultTotalCount2 = $conn->query($sqlTotalCount2);
 		$rowTotalCount2 = $resultTotalCount2->fetch_assoc();
 		$total = $rowTotalCount['TotalCount'] + $rowTotalCount2['TotalCount'];
 		
-		$sqlMale = "SELECT COUNT(gender_id) AS MaleCount FROM residents WHERE gender_id=1";
+		$sqlMale = "SELECT COUNT(gender_id) AS MaleCount FROM residents WHERE gender_id = 1 AND status_id = 1";
 		$resultMale = $conn->query($sqlMale);
 		$rowMale = $resultMale->fetch_assoc();
-		$sqlMale2 = "SELECT COUNT(gender_id) AS MaleCount FROM owners WHERE gender_id=1";
+		$sqlMale2 = "SELECT COUNT(gender_id) AS MaleCount FROM owners WHERE gender_id = 1 AND status_id = 1";
 		$resultMale2 = $conn->query($sqlMale2);
 		$rowMale2 = $resultMale2->fetch_assoc();
 		echo $male = $rowMale['MaleCount'] + $rowMale2['MaleCount'];
 		
-		$sqlFemale = "SELECT COUNT(gender_id) AS FemaleCount FROM residents WHERE gender_id=2";
+		$sqlFemale = "SELECT COUNT(gender_id) AS FemaleCount FROM residents WHERE gender_id = 2 AND status_id = 1";
 		$resultFemale = $conn->query($sqlFemale);
 		$rowFemale = $resultFemale->fetch_assoc();
-		$sqlFemale2 = "SELECT COUNT(gender_id) AS FemaleCount FROM owners WHERE gender_id=2";
+		$sqlFemale2 = "SELECT COUNT(gender_id) AS FemaleCount FROM owners WHERE gender_id = 2 AND status_id = 1";
 		$resultFemale2 = $conn->query($sqlFemale2);
 		$rowFemale2 = $resultFemale2->fetch_assoc();
 		echo $female = $rowFemale['FemaleCount'] + $rowFemale2['FemaleCount'];
