@@ -55,7 +55,7 @@ include("../includes/sidebar.php");
                 <div class="col-lg-12">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <a href="registration_edit.php" type="button" style="float:right" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                            <a href="registration_edit.php?id=<?php echo $owner_id;?>" type="button" style="float:right" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
 							Owner Information
 							
                         </div>
