@@ -23,9 +23,8 @@ include("../includes/sidebar.php");
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
-                                            <th>House No.</th>
-                                            <th>Full Name</th>
                                             <th>Address</th>
+                                            <th>Full Name</th>
                                             <th>Birthdate</th>
                                             <th>Status</th>
 											
@@ -67,7 +66,7 @@ include("../includes/sidebar.php");
 										{
 											echo ' <tbody>
 													<tr>
-													<td><a href="house_details.php?id='.$row['owner_id'].'">'.$row['house_number'].'</a></td>
+													<td><a href="house_details.php?id='.$row['owner_id'].'">'.$row['house_number'].','.$row['address'].'</a></td>
 												';
 												
 														if ($row['type'] === "owner")
@@ -82,7 +81,7 @@ include("../includes/sidebar.php");
 															}
 															
 														
-												echo'	<td>'.$row['address'].'</td>
+												echo'
 														<td>'.$row['birth_date'].'</td>
 														<td>'.$row['status'].'</td>
 													</tr>

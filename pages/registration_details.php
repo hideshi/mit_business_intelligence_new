@@ -16,6 +16,11 @@ require "../lib/util.php";
     $relationships_boarder = $db->execute("SELECT id, name FROM relationships WHERE genre = 2 ORDER BY id ASC", array());
     $statuses = $db->execute("SELECT id, name FROM statuses ORDER BY id ASC", array());
     $owner_id = $_GET['owner_id'];
+    if(isset($_GET['resident_id'])) {
+        $resident_id = $_GET['resident_id'];
+    } else {
+        $resident_id = '1000000';
+    }
 	if(isset($_GET["resident_id"])) {
 		$sqlResident = "
 		select
@@ -404,7 +409,7 @@ jQuery(function($){
     $('#save_resident').click(function(event) {
         console.log("save resident");
         var formData = new FormData();
-        formData.append('resident_id', <?php echo $_GET["resident_id"]?>);
+        formData.append('resident_id', <?php echo $resident_id;?>);
         formData.append('full_name', $('#full_name').val());
         formData.append('birth_date', $('#birth_date').val());
         formData.append('birth_place', $('#birth_place').val());
@@ -429,7 +434,7 @@ jQuery(function($){
             console.log(data);
             $('#myModalEdit').modal('hide');
             $.ajax({
-                url: '../ajax/select_resident.php?resident_id=<?php echo $_GET["resident_id"]?>',
+                url: '../ajax/select_resident.php?resident_id=<?php echo $resident_id;?>',
                 type: 'get',
                 processData: false,
                 contentType: false,

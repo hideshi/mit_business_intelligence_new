@@ -26,7 +26,6 @@ include("../includes/sidebar.php");
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
 									<tr>
-                                            <th>House No.</th>
                                             <th>Address</th>
                                             <th>Owner</th>
                                             <th>Length of Residency</th>
@@ -53,8 +52,7 @@ include("../includes/sidebar.php");
 										{
 										echo'	 <tbody>
 													<tr>
-													<td><a href="house_details.php?id='.$row['id'].'">'.$row['house_number'].'</a></td>
-													<td>'.$row['address'].'</td>
+													<td><a href="house_details.php?id='.$row['id'].'">'.$row['house_number'].','.$row['address'].'</a></td>
 													<td>'.$row['full_name'].'</td>
 													<td>'.$row['years_of_residency'].'</td>
 													<td>'.$row['status'].'</td>
