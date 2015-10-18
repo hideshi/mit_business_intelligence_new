@@ -324,23 +324,6 @@ include("../includes/sidebar.php");
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
 
-    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-                responsive: true
-        });
-    });
-    </script>
-	
-	  <script>
-    $(document).ready(function() {
-        $('#dataTables-example2').DataTable({
-                responsive: true
-        });
-    });
-    </script>
-
 </body>
 
 </html>
