@@ -9,17 +9,26 @@ include("../includes/sidebar.php");
 		$sqlTotalCount = "SELECT COUNT(gender_id) AS TotalCount FROM residents";
 		$resultTotalCount = $conn->query($sqlTotalCount);
 		$rowTotalCount = $resultTotalCount->fetch_assoc();
-		$total = $rowTotalCount['TotalCount'];
+		$sqlTotalCount2 = "SELECT COUNT(gender_id) AS TotalCount FROM owners";
+		$resultTotalCount2 = $conn->query($sqlTotalCount2);
+		$rowTotalCount2 = $resultTotalCount2->fetch_assoc();
+		$total = $rowTotalCount['TotalCount'] + $rowTotalCount2['TotalCount'];
 		
 		$sqlMale = "SELECT COUNT(gender_id) AS MaleCount FROM residents WHERE gender_id=1";
 		$resultMale = $conn->query($sqlMale);
 		$rowMale = $resultMale->fetch_assoc();
-		echo $male = $rowMale['MaleCount'];
+		$sqlMale2 = "SELECT COUNT(gender_id) AS MaleCount FROM owners WHERE gender_id=1";
+		$resultMale2 = $conn->query($sqlMale2);
+		$rowMale2 = $resultMale2->fetch_assoc();
+		echo $male = $rowMale['MaleCount'] + $rowMale2['MaleCount'];
 		
 		$sqlFemale = "SELECT COUNT(gender_id) AS FemaleCount FROM residents WHERE gender_id=2";
 		$resultFemale = $conn->query($sqlFemale);
 		$rowFemale = $resultFemale->fetch_assoc();
-		echo $female = $rowFemale['FemaleCount'];
+		$sqlFemale2 = "SELECT COUNT(gender_id) AS FemaleCount FROM owners WHERE gender_id=2";
+		$resultFemale2 = $conn->query($sqlFemale2);
+		$rowFemale2 = $resultFemale2->fetch_assoc();
+		echo $female = $rowFemale['FemaleCount'] + $rowFemale2['FemaleCount'];
 		
 		
 ?>
@@ -63,11 +72,6 @@ include("../includes/sidebar.php");
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="../bower_components/raphael/raphael-min.js"></script>
-    <script src="../bower_components/morrisjs/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
