@@ -9,6 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new DbManager();
     $sql1 = "SELECT
               res.full_name AS `Full Name`
+            , own.house_number As `House Number`
+            , own.address As `Address`
             , res.birth_date AS `Birth Date`
             , res.birth_place AS `Birth Place`
             , gen.name AS `Gender`
@@ -16,19 +18,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             , res.occupation AS `Occupation`
             , res.years_of_residency AS `Years of Residency`
         FROM owners res
+        LEFT OUTER JOIN owners own
+        ON own.id = res.id
         LEFT OUTER JOIN genders gen
         ON gen.id = res.gender_id
         LEFT OUTER JOIN civil_statuses civ
         ON civ.id = res.civil_status_id";
     $sql2 = "SELECT
-              res.full_name
-            , res.birth_date
-            , res.birth_place
-            , gen.name AS gen_name
-            , civ.name AS civ_name
-            , res.occupation
-            , res.years_of_residency
+              res.full_name AS `Full Name`
+            , own.house_number As `House Number`
+            , own.address As `Address`
+            , res.birth_date AS `Birth Date`
+            , res.birth_place AS `Birth Place`
+            , gen.name AS `Gender`
+            , civ.name AS `Civil Status`
+            , res.occupation AS `Occupation`
+            , res.years_of_residency AS `Years of Residency`
         FROM residents res
+        LEFT OUTER JOIN owner_residents ors
+        ON ors.resident_id = res.id
+        LEFT OUTER JOIN owners own
+        ON own.id = ors.owner_id
         LEFT OUTER JOIN genders gen
         ON gen.id = res.gender_id
         LEFT OUTER JOIN civil_statuses civ
@@ -46,8 +56,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (strpos($k, 'Full_Name') === 0) {
             $where = $where . 'res.full_name';
             $type = 'str';
-        } else if(strpos($k, 'Birth_Date') === 0) {
-            $where = $where . 'res.birth_date';
+        } else if(strpos($k, 'House_Number') === 0) {
+            $where = $where . 'own.house_number';
+            $type = 'str';
+        } else if(strpos($k, 'Address') === 0) {
+            $where = $where . 'own.address';
             $type = 'str';
         } else if(strpos($k, 'Birth_Place') === 0) {
             $where = $where . 'res.birth_place';
@@ -67,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         if ($v[0] === '1' && $type === 'str') {
             $where = $where . ' LIKE ';
-        } else if ($v[0] === '1' && $type === 'int') {
+        } else if ($v[0] === '1') {
             $where = $where . ' = ';
         } else if($v[0] === '2') {
             $where = $where . ' > ';
