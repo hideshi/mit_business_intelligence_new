@@ -621,7 +621,10 @@ jQuery(function($){
         });
     });
     $(document).on('click', '.btn-danger', function(event) {
-        console.log("save owner");
+        console.log("delete resident");
+        if (!confirm('Are you sure to delete this resident?')) {
+            return false;
+        }
         var p = $(this).parents('tr');
         var formData = new FormData();
         formData.append('id', $(this).val());
