@@ -239,6 +239,16 @@ $relationships_boarder = $db->execute("SELECT id, name FROM relationships WHERE 
 		  </div>
 		  
 		  <div class="form-group">
+			<label>Citizenship:</label>
+			<input id="citizenship_dependent" type="text" required class="form-control" placeholder="Citizenship">
+		  </div>
+		  
+		  <div class="form-group">
+			<label>Religion:</label>
+			<input id="religion_dependent" type="text" required class="form-control" placeholder="Religion">
+		  </div>
+		  
+		  <div class="form-group">
 			<label>Gender:</label>
             <select id="gender_id_dependent" class="form-control">
 <?php foreach($genders as $i): ?>
@@ -323,6 +333,16 @@ $relationships_boarder = $db->execute("SELECT id, name FROM relationships WHERE 
 		  </div>
 		  
 		  <div class="form-group">
+			<label>Citizenship:</label>
+			<input id="citizenship_boarder" type="text" required class="form-control" placeholder="Citizenship">
+		  </div>
+		  
+		  <div class="form-group">
+			<label>Religion:</label>
+			<input id="religion_boarder" type="text" required class="form-control" placeholder="Religion">
+		  </div>
+		  
+		  <div class="form-group">
 			<label>Gender:</label>
             <select id="gender_id_boarder" class="form-control">
 <?php foreach($genders as $i): ?>
@@ -400,6 +420,8 @@ jQuery(function($){
         formData.append('birth_place', $('#birth_place_dependent').val());
         formData.append('years_of_residency', $('#years_of_residency_dependent').val());
         formData.append('occupation', $('#occupation_dependent').val());
+        formData.append('citizenship', $('#citizenship_dependent').val());
+        formData.append('religion', $('#religion_dependent').val());
         formData.append('relationship_id', $('#relationship_id_dependent option:selected').val());
         formData.append('highest_education_attainment_id', $('#highest_education_attainment_id_dependent option:selected').val());
         formData.append('civil_status_id', $('#civil_status_id_dependent option:selected').val());
@@ -415,6 +437,7 @@ jQuery(function($){
             console.log("success");
             console.log(data);
             $('#myModalAddDependents').modal('hide');
+            $('#form_dependent')[0].reset();
             $.ajax({
                 url: '../ajax/select_residents.php?pk_owner=' + $('#pk_owner').val() + '&genre=1',
                 type: 'get',
@@ -458,6 +481,8 @@ jQuery(function($){
         formData.append('birth_place', $('#birth_place_boarder').val());
         formData.append('years_of_residency', $('#years_of_residency_boarder').val());
         formData.append('occupation', $('#occupation_boarder').val());
+        formData.append('citizenship', $('#citizenship_boarder').val());
+        formData.append('religion', $('#religion_boarder').val());
         formData.append('relationship_id', $('#relationship_id_boarder option:selected').val());
         formData.append('highest_education_attainment_id', $('#highest_education_attainment_id_boarder option:selected').val());
         formData.append('civil_status_id', $('#civil_status_id_boarder option:selected').val());
@@ -472,6 +497,7 @@ jQuery(function($){
         .done(function(data) {
             console.log("success");
             console.log(data);
+            $('#form_boarder')[0].reset();
             $('#myModalAddBoarders').modal('hide');
             $.ajax({
                 url: '../ajax/select_residents.php?pk_owner=' + $('#pk_owner').val() + '&genre=2',
