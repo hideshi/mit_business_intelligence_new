@@ -43,8 +43,8 @@ include("../includes/sidebar.php");
             <div class="row">
 				<div class="col-md-6">
 					<div class="alert alert-success" role="alert"><i class="fa fa-users fa-fw"></i> Total Residents: <?php echo $total;?></div>
-					<div class="alert alert-warning" role="alert"><i class="fa fa-male fa-fw"></i> Total Male Count: <?php echo $male;?></div>
-					<div class="alert alert-info" role="alert"><i class="fa fa-female fa-fw"></i> Total Female Count: <?php echo $female;?></div>
+					<div class="alert alert-info" role="alert"><i class="fa fa-male fa-fw"></i> Total Male Count: <?php echo $male;?></div>
+					<div class="alert alert-danger" role="alert"><i class="fa fa-female fa-fw"></i> Total Female Count: <?php echo $female;?></div>
 				</div>
 			   <div class="col-md-6">
 					<div id="canvas-holder">
@@ -93,7 +93,7 @@ include("../includes/sidebar.php");
 				
 				{
 					value:  <?php echo $female; ?>,
-					color:"#F5A9E1",
+					color:"#F6CEE3",
 					highlight: "#FE2E64",
 					label: "Female"
 				},
