@@ -86,16 +86,16 @@ include("../includes/sidebar.php");
 		var pieData = [
 				{
 					value: <?php echo $male; ?>,
-					color:"#F7464A",
-					highlight: "#FF5A5E",
-					label: "Red"
+					color:"#81DAF5",
+					highlight: "#2E64FE",
+					label: "Male"
 				},
 				
 				{
 					value:  <?php echo $female; ?>,
-					color: "#FDB45C",
-					highlight: "#FFC870",
-					label: "Yellow"
+					color:"#F5A9E1",
+					highlight: "#FE2E64",
+					label: "Female"
 				},
 				
 			];
