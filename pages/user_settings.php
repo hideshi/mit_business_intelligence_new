@@ -89,6 +89,7 @@ jQuery(function($){
     })
 
      $('#cancel_settings').click(function(event) {
+        return false;
     })
 });
 
