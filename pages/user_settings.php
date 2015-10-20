@@ -89,8 +89,6 @@ jQuery(function($){
     })
 
      $('#cancel_settings').click(function(event) {
-        console.log("refresh");
-		$('#form').submit();
     })
 });
 
